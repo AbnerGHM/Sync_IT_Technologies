@@ -9,5 +9,24 @@
         android:id="@+id/loginFragment"
         android:name="com.abner.syncittechnologies.login.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.abner.syncittechnologies.main.MainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment" />
+    <fragment
+        android:id="@+id/incomesFragment"
+        android:name="com.abner.syncittechnologies.incomes.IncomesFragment"
+        android:label="incomes_fragment"
+        tools:layout="@layout/incomes_fragment" />
+    <fragment
+        android:id="@+id/expensesFragment"
+        android:name="com.abner.syncittechnologies.expenses.ExpensesFragment"
+        android:label="expenses_fragment"
+        tools:layout="@layout/expenses_fragment" />
 </navigation>

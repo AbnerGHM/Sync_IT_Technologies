@@ -10,12 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.abner.syncittechnologies.R
+import com.abner.syncittechnologies.databinding.FragmentLoginBinding
+import com.abner.syncittechnologies.databinding.MainFragmentBinding
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
@@ -27,29 +30,27 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+        val binding: FragmentLoginBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        loginViewModel =
+            ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory()).get(LoginViewModel::class.java)
 
-        val usernameEditText = view.findViewById<EditText>(R.id.username)
-        val passwordEditText = view.findViewById<EditText>(R.id.password)
-        val loginButton = view.findViewById<Button>(R.id.login)
-        val loadingProgressBar = view.findViewById<ProgressBar>(R.id.loading)
+        val usernameEditText = binding.username
+        val passwordEditText = binding.password
+        val loadingProgressBar = binding.loading
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
             Observer { loginFormState ->
-                if (loginFormState == null) {
-                    return@Observer
-                }
-                loginButton.isEnabled = loginFormState.isDataValid
-                loginFormState.usernameError?.let {
-                    usernameEditText.error = getString(it)
-                }
-                loginFormState.passwordError?.let {
-                    passwordEditText.error = getString(it)
+                if (loginFormState != null) {
+
+                  //  loginButton.isEnabled = loginFormState.isDataValid
+                    loginFormState.usernameError?.let {
+                        usernameEditText.error = getString(it) // Ref R.string.*
+                    }
+                    loginFormState.passwordError?.let {
+                        passwordEditText.error = getString(it)
+                    }
                 }
             })
 
@@ -66,7 +67,12 @@ class LoginFragment : Fragment() {
             })
 
         val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
                 // ignore
             }
 
@@ -81,8 +87,10 @@ class LoginFragment : Fragment() {
                 )
             }
         }
+        //called when text or pass change
         usernameEditText.addTextChangedListener(afterTextChangedListener)
         passwordEditText.addTextChangedListener(afterTextChangedListener)
+        //callback for button check in keyboard
         passwordEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(
@@ -93,14 +101,24 @@ class LoginFragment : Fragment() {
             false
         }
 
-        loginButton.setOnClickListener {
+        binding.login.setOnClickListener {
             loadingProgressBar.visibility = View.VISIBLE
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
             )
+
+            if (loginViewModel.userDataValid.value!!){
+            //   this.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+            }
+
         }
+        binding.loginViewModel = loginViewModel
+        binding.lifecycleOwner = this
+
+        return binding.root
     }
+
 
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome) + model.displayName

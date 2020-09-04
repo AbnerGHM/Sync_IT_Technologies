@@ -1,9 +1,11 @@
 package com.abner.syncittechnologies.login.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
+import androidx.lifecycle.Transformations
 import com.abner.syncittechnologies.R
 import com.abner.syncittechnologies.login.data.LoginRepository
 import com.abner.syncittechnologies.login.data.Result
@@ -15,10 +17,13 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
+    val userDataValid = Transformations.map(_loginForm){
+        it.isDataValid
+    }
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
-    fun login(username: String, password: String) {
+    fun login(username: String, password: String)  {
         // can be launched in a separate asynchronous job
         val result = loginRepository.login(username, password)
 
@@ -31,13 +36,17 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun loginDataChanged(username: String, password: String) {
+        //if username and password is not true, else is executed
         if (!isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
+
         }
+
+
     }
 
     // A placeholder username validation check
