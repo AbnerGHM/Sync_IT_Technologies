@@ -3,10 +3,21 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Correo</string>
     <string name="prompt_password">Contraseña</string>
-    <string name="action_sign_in">Accede o Registrate</string>
+    <string name="action_sign_in">Acceder</string>
     <string name="action_sign_in_short">Ingresa</string>
     <string name="welcome">"Hola, "</string>
     <string name="invalid_username">Nombre de usuario no valido</string>
     <string name="invalid_password">La contraseña debe contener al menos 5 caracteres</string>
     <string name="login_failed">"Acceso denegado"</string>
+    <string name="registro">Registro</string>
+
+    <string name="selected_item">Selected item:</string>
+    <string name="aun_no_tienes_cuenta">¿Aun no tienes cuenta?</string>
+    <string name="registrate"><i><u>Registrate</u></i></string>
+    <string-array name="Languages">
+        <item>Tipo de Negocio 1</item>
+        <item>Tipo de Negocio 2</item>
+        <item>Tipo de Negocio 3</item>
+        <item>Tipo de Negocio 4</item>
+    </string-array>
 </resources>

@@ -9,13 +9,22 @@ import java.io.IOException
 class LoginDataSource {
 
     fun login(username: String, password: String): Result<LoggedInUser> {
-        try {
+        //try {
             // TODO: handle loggedInUser authentication
-            val fakeUser : LoggedInUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Lizeth Cuevas")
+           // java.util.UUID.randomUUID().toString()
 
-            return Result.Success(fakeUser) // LoggedInUser
-        } catch (e: Throwable) {
-            return Result.Error(IOException("Error logging in", e))
+            val fakeUser  = LoggedInUser("1", "Lizeth Cuevas")
+            if (username == "Lizbeth" && password == "123456") {
+
+
+                return Result.Success(fakeUser) // LoggedInUser
+            }else{
+
+
+    //    } catch (e: Throwable) {
+           // return Result.Error(IOException("Error logging in", e))
+                return Result.Error(IOException("El usuario no existe"))
+
         }
     }
 

@@ -1,6 +1,5 @@
 package com.abner.syncittechnologies.expenses
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,11 +21,4 @@ class ExpensesFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.expenses_fragment, container, false)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ExpensesViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

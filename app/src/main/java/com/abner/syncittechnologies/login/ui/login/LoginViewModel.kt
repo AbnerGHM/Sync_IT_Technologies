@@ -1,15 +1,13 @@
 package com.abner.syncittechnologies.login.ui.login
 
-import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import android.util.Patterns
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.abner.syncittechnologies.R
 import com.abner.syncittechnologies.login.data.LoginRepository
 import com.abner.syncittechnologies.login.data.Result
-
 
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {

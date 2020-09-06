@@ -1,8 +1,5 @@
 package com.abner.syncittechnologies.login.ui.login//package com.abner.syncittechnologies.login.ui.login
 
-import androidx.lifecycle.Observer
-import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.abner.syncittechnologies.R
 import com.abner.syncittechnologies.databinding.FragmentLoginBinding
-import com.abner.syncittechnologies.databinding.MainFragmentBinding
-import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
@@ -38,7 +35,7 @@ class LoginFragment : Fragment() {
 
         val usernameEditText = binding.username
         val passwordEditText = binding.password
-        val loadingProgressBar = binding.loading
+       // val loadingProgressBar = binding.loading
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner,
             Observer { loginFormState ->
@@ -57,7 +54,7 @@ class LoginFragment : Fragment() {
         loginViewModel.loginResult.observe(viewLifecycleOwner,
             Observer { loginResult ->
                 loginResult ?: return@Observer
-                loadingProgressBar.visibility = View.GONE
+         //       loadingProgressBar.visibility = View.GONE
                 loginResult.error?.let {
                     showLoginFailed(it)
                 }
@@ -97,38 +94,44 @@ class LoginFragment : Fragment() {
                     usernameEditText.text.toString(),
                     passwordEditText.text.toString()
                 )
+                if (loginViewModel.userDataValid.value!! && loginViewModel.loginResult.value?.error ==null ){
+                    this.findNavController().navigate(R.id.registerFragment)
+                }
             }
             false
         }
 
         binding.login.setOnClickListener {
-            loadingProgressBar.visibility = View.VISIBLE
+         //   loadingProgressBar.visibility = View.VISIBLE
             loginViewModel.login(
                 usernameEditText.text.toString(),
                 passwordEditText.text.toString()
             )
 
-            if (loginViewModel.userDataValid.value!!){
-            //   this.findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+            if (loginViewModel.userDataValid.value!! && loginViewModel.loginResult.value?.error ==null ){
+               this.findNavController().navigate(R.id.registerFragment)
             }
 
         }
         binding.loginViewModel = loginViewModel
         binding.lifecycleOwner = this
 
+
         return binding.root
     }
 
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun
+
+updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome) + model.displayName
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
+        Toast.makeText(appContext, welcome, Toast.LENGTH_SHORT).show()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, errorString, Toast.LENGTH_LONG).show()
+        Toast.makeText(appContext, errorString, Toast.LENGTH_SHORT).show()
     }
 }
